@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+{%load static%}
+{%block content%}
+		<!-- BREADCRUMB -->
+		<div id="breadcrumb" class="section">
+			<!-- container -->
+			<div class="container">
+				<!-- row -->
+				<div class="row">
+					<div class="col-md-12">
+						<ul class="breadcrumb-tree">
+							<li><a href="{%url 'product_list'%}">Bosh sahifa</a></li>
+							<li><a href="#">{{ product.category.name }}</a></li>
+							<li class="active">{{ product.name }}</li>
+						</ul>
+					</div>
+				</div>
+				<!-- /row -->
+			</div>
+			<!-- /container -->
+		</div>
+		<!-- /BREADCRUMB -->
+
+		<!-- SECTION -->
+		<div class="section">
+			<!-- container -->
+			<div class="container">
+				<!-- row -->
+				<div class="row">
+					<!-- Asosiy mahsulot rasmi -->
+					<div class="col-md-5 col-md-push-2">
+						<div id="product-main-img">
+							<div class="product-preview">
+								<img src="{{ product.main_image.url }}" alt="{{ product.name }}">
+							</div>
+							{% for image in product.images.all %}
+							<div class="product-preview">
+								<img src="{{ image.image.url }}" alt="{{ product.name }}">
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+					<!-- /Asosiy mahsulot rasmi -->
+				
+					<!-- Kichik rasm podval -->
+					<div class="col-md-2 col-md-pull-5">
+						<div id="product-imgs">
+							<div class="product-preview">
+								<img src="{{ product.main_image.url }}" alt="{{ product.name }}">
+							</div>
+							{% for image in product.images.all %}
+							<div class="product-preview">
+								<img src="{{ image.image.url }}" alt="{{ product.name }}">
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+					<!-- /Kichik rasm podval -->
+				
+
+					<!-- Product details -->
+					<div class="col-md-5">
+						<div class="product-details">
+							<h2 class="product-name">{{ product.name }}</h2>
+							<div>
+								<h3 class="product-price">
+									{{ product.price }}
+									{% if product.old_price %}
+										<del class="product-old-price">{{ product.old_price }}</del>
+									{% endif %}
+								</h3>
+								<span class="product-available">
+									{% if product.quantity > 0 %}
+										Mavjud
+									{% else %}
+										Sotuvda yo‘q
+									{% endif %}
+								</span>
+							</div>
+							<p>{{ product.description }}</p>
+					
+							<div class="product-options">
+								{% if product.size %}
+								<label>
+									O‘lcham:
+									<select class="input-select">
+										<option value="0">{{ product.size }}</option>
+									</select>
+								</label>
+								{% endif %}
+								{% if product.color %}
+								<label>
+									Rang:
+									<select class="input-select">
+										<option value="0">{{ product.color }}</option>
+									</select>
+								</label>
+								{% endif %}
+							</div>
+					
+							<div class="add-to-cart">
+								<div class="qty-label">
+									Soni:
+									<div class="input-number">
+										<input type="number" value="1" min="1" max="{{ product.quantity }}">
+										<span class="qty-up">+</span>
+										<span class="qty-down">-</span>
+									</div>
+								</div>
+								<button class="add-to-cart-btn">
+									<a href="{% url 'add_to_cart' product.id %}">
+										<i class="fa fa-shopping-cart"></i> Savatga qo‘shish
+									</a>
+								</button>
+							</div>
+							<ul class="product-links">
+								<li>Kategoriya:</li>
+								{% if product.category %}
+									<li><a href="#">{{ product.category.name }}</a></li>
+								{% endif %}
+								{% if product.brand %}
+								<li>Brand:</li>
+									<li><a href="#">{{ product.brand.name }}</a></li>
+								{% endif %}
+							</ul>
+					
+							<ul class="product-links">
+								<li>Ulashish:</li>
+								<li><a href="#"><i class="fa fa-facebook"></i></a></li>
+								<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+								<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+								<li><a href="#"><i class="fa fa-envelope"></i></a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<!-- /row -->
+			</div>
+			<!-- /container -->
+		</div>
+		<!-- /SECTION -->
+
+		<!-- Section -->
+		<div class="section">
+			<!-- container -->
+			<div class="container">
+				<!-- row -->
+				<div class="row">
+					<div class="col-md-12">
+						<div class="section-title text-center">
+							<h3 class="title">Shu kategoriyaga tegishli mahsulotlar</h3>
+						</div>
+					</div>
+				
+					{% for item in related_products %}
+					<div class="col-md-3 col-xs-6">
+						<div class="product">
+							<div class="product-img">
+								<img src="{{ item.main_image.url }}" alt="{{ item.name }}">
+								{% if item.discount %}
+								<div class="product-label">
+									<span class="sale">-{{ item.discount }}%</span>
+								</div>
+								{% endif %}
+							</div>
+							<div class="product-body">
+								<p class="product-category">{{ item.category.name }}</p>
+								<h3 class="product-name"><a href="{% url 'product_detail' item.pk %}">{{ item.name }}</a></h3>
+								<h4 class="product-price">{{ item.price }}sum
+									{% if item.old_price %}
+										<del class="product-old-price">${{ item.old_price }}</del>
+									{% endif %}
+								</h4>
+								<div class="product-rating">
+									<!-- Add stars based on rating if needed -->
+								</div>
+								<div class="product-btns">
+									<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
+									<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+								</div>
+							</div>
+							<div class="add-to-cart">
+								<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+				<!-- /row -->
+			</div>
+			<!-- /container -->
+		</div>
+		<!-- /Section -->
+
+{%endblock content%}

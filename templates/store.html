@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+		<!-- BREADCRUMB -->
+		<div id="breadcrumb" class="section">
+			<!-- container -->
+			<div class="container">
+				<!-- row -->
+				<div class="row">
+					<div class="col-md-12">
+						<ul class="breadcrumb-tree">
+							<li><a href="{%url 'product_list'%}">Bosh sahifa</a></li>
+							<li class="active"><a href="{%url 'store'%}">Barcha Mahsulotlar</a></li>
+						</ul>
+					</div>
+				</div>
+				<!-- /row -->
+			</div>
+			<!-- /container -->
+		</div>
+		<!-- /BREADCRUMB -->
+
+		<!-- SECTION -->
+		<div class="section">
+			<!-- container -->
+			<div class="container">
+				<!-- row -->
+				<div class="row">
+					<!-- ASIDE -->
+					<div id="aside" class="col-md-3">
+						<div class="aside">
+							<h3 class="aside-title">Kategoriyalar</h3>
+							<form method="get" action="{% url 'store' %}">
+								<div class="checkbox-filter">
+									{% for category in categories %}
+									<div class="input-checkbox">
+										<input type="checkbox"
+											   name="category" 
+											   value="{{ category.id }}"
+											   id="category-{{ category.id }}"
+											   onchange="this.form.submit()"
+											   {% if category.id|stringformat:"s" in selected_categories %}checked{% endif %}>
+										<label for="category-{{ category.id }}">
+											<span></span>
+											{{ category.name }}
+											<small>({{ category.products.count }})</small>
+										</label>
+									</div>
+									{% endfor %}
+								</div>
+							</form>				
+						</div>
+					</div>
+					<!-- /ASIDE -->
+
+					<!-- STORE -->
+					<div id="store" class="col-md-9">
+						<!-- store top filter -->
+						<div class="store-filter clearfix">
+							<form method="get" id="sortForm">
+								<div class="store-sort">
+									<label>
+										Saralash:
+										<select class="input-select" name="sort" onchange="document.getElementById('sortForm').submit();">
+											<option value="">-- Tanlang --</option>
+											<option value="top" {% if request.GET.sort == 'top' %}selected{% endif %}>Top</option>
+											<option value="new" {% if request.GET.sort == 'new' %}selected{% endif %}>Yangi</option>
+										</select>
+									</label>
+						
+									<label>
+										Ko‘rsatish:
+										<select class="input-select" name="show" onchange="document.getElementById('sortForm').submit();">
+											<option value="20" {% if request.GET.show == '20' %}selected{% endif %}>20</option>
+											<option value="50" {% if request.GET.show == '50' %}selected{% endif %}>50</option>
+										</select>
+									</label>
+								</div>
+							</form>
+						</div>
+						
+						<!-- /store top filter -->
+
+						<!-- store products -->
+						<div class="row">
+							{% for product in products %}
+							  <!-- product -->
+							  <div class="col-md-4 col-xs-6">
+								<div class="product">
+								  <div class="product-img">
+									<img src="{{ product.main_image.url }}" alt="{{ product.name }}" class="product-img-fixed">
+									{% if product.new %}
+									  <div class="product-label">
+										<span class="new">Yangi</span>
+									  </div>
+									{% endif %}
+									{%if product.top_seller%}
+									  <div class="product-label">
+										<span class="new">Top</span>
+									  </div>
+									{% endif %}
+								  </div>
+								  <div class="product-body">
+									<p class="product-category">{{ product.category.name }}</p>
+									<h3 class="product-name"><a href="#">{{ product.name }}</a></h3>
+									<h4 class="product-price">
+									  {{ product.price }}
+									  {% if product.old_price %}
+										<del class="product-old-price">{{ product.old_price }}</del>
+									  {% endif %}
+									</h4>
+									<div class="product-rating">
+									  <!-- Yulduzchalar ixtiyoriy qo‘shilsa bo'ladi -->
+									</div>
+									<div class="product-btns">
+										<a href="{% url 'product_detail' pk=product.id %}" class="quick-view">
+											<i class="fa fa-eye">Batafsil</i>
+											<span class="tooltipp">Ko'rish</span>
+										</a>
+									</div>
+								  </div>
+								  <div class="add-to-cart">
+									<a href="{% url 'add_to_cart' product.id %}" class="add-to-cart-btn">
+										<i class="fa fa-shopping-cart"></i> Savatga qo‘shish
+									</a>
+								</div>	
+								</div>
+							  </div>
+							  <!-- /product -->
+						  
+							  <div class="clearfix visible-sm visible-xs"></div>
+							{% empty %}
+							  <p class="text-center">Tanlangan bo'lim uchun mahsulot topilmadi.</p>
+							{% endfor %}
+						  </div>
+						  
+						<!-- /store products -->
+
+						<!-- store bottom filter -->
+						<div class="store-filter clearfix">
+							<ul class="store-pagination">
+								<li class="active">1</li>
+								<li><a href="#">2</a></li>
+								<li><a href="#">3</a></li>
+								<li><a href="#">4</a></li>
+								<li><a href="#"><i class="fa fa-angle-right"></i></a></li>
+							</ul>
+						</div>
+						<!-- /store bottom filter -->
+					</div>
+					<!-- /STORE -->
+				</div>
+				<!-- /row -->
+			</div>
+			<!-- /container -->
+		</div>
+		<!-- /SECTION -->
+{% endblock content %}

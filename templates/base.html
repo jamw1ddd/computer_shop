@@ -1,0 +1,270 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+		<title>Electro - HTML Ecommerce Template</title>
+
+		<!-- Google font -->
+		<link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+
+        <!-- Bootstrap -->
+        <link type="text/css" rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+        
+        <!-- Slick -->
+        <link type="text/css" rel="stylesheet" href="{% static 'css/slick.css' %}" />
+        <link type="text/css" rel="stylesheet" href="{% static 'css/slick-theme.css' %}" />
+        
+        <!-- nouislider -->
+        <link type="text/css" rel="stylesheet" href="{% static 'css/nouislider.min.css' %}" />
+        
+        <!-- Font Awesome Icon -->
+        <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+        
+        <!-- Custom stylesheet -->
+        <link type="text/css" rel="stylesheet" href="{% static 'css/style.css' %}" />
+
+		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    </head>
+	<body>
+		<!-- HEADER -->
+		<header>
+			<!-- TOP HEADER -->
+			<div id="top-header">
+				<div class="container">
+					<ul class="header-links pull-left">
+						<li><a href="#"><i class="fa fa-phone"></i> +99888 807-06-11</a></li>
+						<li><a href="#"><i class="fa fa-envelope-o"></i> Mfayzullo41@gmail.com</a></li>
+						<li><a href="#"><i class="fa fa-map-marker"></i> Mustaqillik 10</a></li>
+					</ul>
+					{% comment %} <ul class="header-links pull-right">
+						<li><a href="#"><i class="fa fa-user-o"></i> My Account</a></li>
+					</ul> {% endcomment %}
+				</div>
+			</div>
+			<!-- /TOP HEADER -->
+
+			<!-- MAIN HEADER -->
+			<div id="header">
+				<!-- container -->
+				<div class="container">
+					<!-- row -->
+					<div class="row">
+						<!-- LOGO -->
+						<div class="col-md-3">
+							<div class="header-logo">
+								<a href="#" class="logo">
+									<img src="./img/logo.png" alt="">
+								</a>
+							</div>
+						</div>
+						<!-- /LOGO -->
+
+						<!-- SEARCH BAR -->
+						<div class="col-md-6">
+							<div class="header-search">
+								<form method="get" action="{% url 'store' %}">
+									<select class="input-select" name="category">
+										{% comment %} <option value="">Barcha kategoriyalar</option> {% endcomment %}
+										{% for category in categories %}
+											<option value="{{ category.id }}" {% if category.id|stringformat:"s" == request.GET.category %}selected{% endif %}>{{ category.name }}</option>
+										{% endfor %}
+									</select>
+									<input class="input" name="q" placeholder="Mahsulot qidiring" value="{{ request.GET.q }}">
+									<button class="search-btn">Qidirish</button>
+								</form>
+							</div>
+						</div>
+						<!-- /SEARCH BAR -->
+
+						<!-- ACCOUNT -->
+						<div class="col-md-3 clearfix">
+							<div class="header-ctn">
+
+								<!-- Cart -->
+								<div class="dropdown">
+									<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+										<i class="fa fa-shopping-cart"></i>
+										<a href="{% url 'checkout' %}">
+										<span>Savat</span>
+										</a>
+									</a>
+								</div>
+								<!-- /Cart -->
+							</div>
+						</div>
+						<!-- /ACCOUNT -->
+					</div>
+					<!-- row -->
+				</div>
+				<!-- container -->
+			</div>
+			<!-- /MAIN HEADER -->
+		</header>
+		<!-- /HEADER -->
+
+		<!-- NAVIGATION -->
+		<nav id="navigation">
+			<!-- container -->
+			<div class="container">
+				<!-- responsive-nav -->
+				<div id="responsive-nav">
+					<!-- NAV -->
+					<ul class="main-nav nav navbar-nav">
+						<li class="active"><a href="{%url 'product_list'%}">Bosh sahifa</a></li>
+						<li><a href="{% url 'store' %}">Barcha Mahsulotlar</a></li>
+						{% for category in categories %}
+						<li><a href="{% url 'store' %}?category={{ category.id }}">{{ category.name }}</a></li>
+						{% endfor %}
+					</ul>
+					<!-- /NAV -->
+				</div>
+				<!-- /responsive-nav -->
+			</div>
+			<!-- /container -->
+		</nav>
+		<!-- /NAVIGATION -->
+
+        {%block content%}
+
+        {%endblock content%}
+		<!-- PHONE SUBSCRIBE -->
+		<div id="newsletter" class="section">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="newsletter">
+							<p>Bog'lanish uchun <strong>Raqamingizni kiriting</strong></p>
+							<form action="{% url 'phone_subscribe' %}" method="post">
+								{% csrf_token %}
+								<input type="text" name="phone_number" class="input" placeholder="Raqamingizni kiriting">
+								<button class="newsletter-btn" type="submit"><i class="fa fa-phone"></i> Yuborish</button>
+							</form>
+							<ul class="newsletter-follow">
+								<li><a href="#"><i class="fa fa-facebook"></i></a></li>
+								<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+								<li><a href="#"><i class="fa fa-instagram"></i></a></li>
+								<li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /PHONE SUBSCRIBE -->
+
+		<!-- FOOTER -->
+		<footer id="footer">
+			<!-- yuqori footer -->
+			<div class="section">
+				<!-- container -->
+				<div class="container">
+					<!-- row -->
+					<div class="row">
+						<div class="col-md-3 col-xs-6">
+							<div class="footer">
+								<h3 class="footer-title">Biz haqimizda</h3>
+								<p>Biz zamonaviy texnologik mahsulotlarni taqdim etamiz. Savollaringiz bo‘lsa, bog‘laning!</p>
+								<ul class="footer-links">
+									<li><a href="#"><i class="fa fa-map-marker"></i> Mustaqillik 10</a></li>
+									<li><a href="#"><i class="fa fa-phone"></i>+99888 807-06-11</a></li>
+									<li><a href="#"><i class="fa fa-envelope-o"></i>Mfayzullo41@gmail.com</a></li>
+								</ul>
+							</div>
+						</div>
+
+						<div class="col-md-3 col-xs-6">
+							<div class="footer">
+								<h3 class="footer-title">Kategoriyalar</h3>
+								<ul class="footer-links">
+									<li><a href="#">Aksiya mahsulotlari</a></li>
+									<li><a href="#">Noutbuklar</a></li>
+									<li><a href="#">Smartfonlar</a></li>
+									<li><a href="#">Kameralar</a></li>
+									<li><a href="#">Aksessuarlar</a></li>
+								</ul>
+							</div>
+						</div>
+
+						<div class="clearfix visible-xs"></div>
+
+						<div class="col-md-3 col-xs-6">
+							<div class="footer">
+								<h3 class="footer-title">Ma'lumotlar</h3>
+								<ul class="footer-links">
+									<li><a href="#">Biz haqimizda</a></li>
+									<li><a href="#">Aloqa</a></li>
+									<li><a href="#">Maxfiylik siyosati</a></li>
+									<li><a href="#">Buyurtmalar va qaytarish</a></li>
+									<li><a href="#">Foydalanish shartlari</a></li>
+								</ul>
+							</div>
+						</div>
+
+						<div class="col-md-3 col-xs-6">
+							<div class="footer">
+								<h3 class="footer-title">Xizmatlar</h3>
+								<ul class="footer-links">
+									<li><a href="#">Shaxsiy kabinet</a></li>
+									<li><a href="#">Savatni ko‘rish</a></li>
+									<li><a href="#">Saqlanganlar</a></li>
+									<li><a href="#">Buyurtmani kuzatish</a></li>
+									<li><a href="#">Yordam</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<!-- /row -->
+				</div>
+				<!-- /container -->
+			</div>
+			<!-- /yuqori footer -->
+
+			<!-- pastki footer -->
+			<div id="bottom-footer" class="section">
+				<div class="container">
+					<!-- row -->
+					<div class="row">
+						<div class="col-md-12 text-center">
+							<ul class="footer-payments">
+								<li><a href="#"><i class="fa fa-cc-visa"></i></a></li>
+								<li><a href="#"><i class="fa fa-credit-card"></i></a></li>
+								<li><a href="#"><i class="fa fa-cc-paypal"></i></a></li>
+								<li><a href="#"><i class="fa fa-cc-mastercard"></i></a></li>
+								<li><a href="#"><i class="fa fa-cc-discover"></i></a></li>
+								<li><a href="#"><i class="fa fa-cc-amex"></i></a></li>
+							</ul>
+							<span class="copyright">
+								Copyright &copy;<script>document.write(new Date().getFullYear());</script> Barcha huquqlar himoyalangan | Sayt <i class="fa fa-heart-o" aria-hidden="true"></i> bilan ishlab chiqilgan
+							</span>
+						</div>
+					</div>
+					<!-- /row -->
+				</div>
+				<!-- /container -->
+			</div>
+			<!-- /pastki footer -->
+		</footer>
+		<!-- /FOOTER -->
+
+
+		<!-- jQuery Plugins -->
+        <script src="{% static 'js/jquery.min.js' %}"></script>
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'js/slick.min.js' %}"></script>
+        <script src="{% static 'js/nouislider.min.js' %}"></script>
+        <script src="{% static 'js/jquery.zoom.min.js' %}"></script>
+        <script src="{% static 'js/main.js' %}"></script>
+
+	</body>
+</html>
